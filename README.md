@@ -1,1 +1,1 @@
-# squirell_mapper
+# SQUIRELL MAPPER
