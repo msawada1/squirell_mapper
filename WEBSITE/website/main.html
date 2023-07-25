@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SQUIRELL</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+
+
+    <link rel="shortcut icon" href="">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+ src="https://code.jquery.com/jquery-3.3.1.js"
+ integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+ crossorigin="anonymous"></script>
+
+ <script>
+  function afficherImages(event) {
+    var fichier = event.target.files[0];
+    var lecteur = new FileReader();
+
+    lecteur.onload = function(e) {
+      var image = document.getElementById('image');
+      image.src = e.target.result;
+    };
+
+    lecteur.readAsDataURL(fichier);
+  }
+    $(document).ready(function() {
+      $('form').submit(function(event) {
+        event.preventDefault(); // Empêche le comportement de soumission par défaut
+  
+        var formData = new FormData(this);
+  
+        $.ajax({
+          url: 'image.php',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function(response) {
+            // Traitez la réponse du serveur ici
+            console.log(response);
+            var texte_select=document.getElementById('select');
+            texte_select.innerText=response;
+            var bouton_1=document.getElementById('bouton1')
+            bouton1.style.display='block'
+
+
+            var result=document.getElementById('result')
+            result.innerText=''
+
+          },
+          error: function(xhr, status, error) {
+            // Gérez les erreurs éventuelles ici
+            console.log(error);
+          }
+        });
+      });
+    });
+</script>
+
+
+     <link rel="stylesheet" href="css/style_css.css">
+  </head>
+  <body>
+    <header>
+
+
+
+<div id="image-tel" class="image-container">
+  <h1  id="title">SQUIRELL</h1>
+  <h1 id="select" >Sélectionner une image</h1>
+  <form action="image.php" method="post" enctype="multipart/form-data">
+    <input type="file" accept="image/*" onchange="afficherImages(event)" name="image">
+    <input type="submit" value="Envoyer" id='envoyer'>
+  </form>
+  <img id="image" src="#" alt="">
+  <img id="heatmap" src="#" alt="">
+
+</div> 
+<br>
+<div id="ajout_squirell" style="display: none;">
+  <br>
+  <label ><br>Latitude<br></label>   </label> <input type="text" id="lat_AJOUT"  >
+  <label ><br>Longitude<br></label>   </label> <input type="text" id="lon_AJOUT" >
+  <button id="coord_ajout" >Ajouter squirell</button>
+  <br>
+
+
+</div>
+
+<br>
+<div id="result"></div>
+
+<div id="loading-indicator" style="display: none;">
+  <!-- Vous pouvez utiliser une image d'animation GIF ou un message -->
+  <p>Chargement en cours...</p>
+  <img src="gif/squirell-gif.gif" alt="Attente...">
+</div>
+
+<button id="bouton_morph" style="display: none;">Quelle est la couleur de l'ecureuil</button>
+
+
+<div id="result_morph"></div>
+
+
+<div>
+
+  <button id="bouton1" style="display: none;">Exécuter le code Python</button>
+  <br>
+  <button id="bouton_HEATMAP" style="display: none;" >HEATMAP</button>
+  <br><br>
+  </div>
+
+
+  <button id="texte_bouton" style="display: none;">Python interpreter</button>
+  <input type="text" id="monTexte" style="display: none;"><br><br>
+  
+<p id="nombre_squirell"></p><div class="chart-container">
+  <canvas id="myChart"></canvas>
+</div>
+<div id="map"></div>
+
+
+<div id="selct_ville"><h2>Sélectionnez une ville :</h2>
+  <form method="POST" action="traitement.php">
+    <select name="ville" id="villeSelect">
+    </select>
+    <br>
+    <input type="submit" value="Valider" id="bouton_city"></div>
+
+
+
+
+<div id="lat_long_city">
+  <label><br>Latitude<br></label>   </label> <input type="text" id="lat_text">
+
+
+  <label><br>Longitude<br></label>   </label> <input type="text" id="lon_text">
+
+  <button id="coord_bouton">Valider</button>
+
+
+  <br>
+  <p id="pas_lat_long"></p>
+  <br>
+
+<p> Ottawa, ON, Canada
+  Latitude and longitude coordinates are: 45.424721, -75.695000.</p><button id="coord_bouton_ottawa">Valider</button>
+  <p> Boston, MA, USA
+    Latitude and longitude coordinates are: 42.361145, -71.057083.</p><button id="coord_bouton_boston">Valider</button>
+    <p>New York City, NY, USA
+      Latitude and longitude coordinates are: 40.730610, -73.935242.</p><button id="coord_bouton_new_york">Valider</button>
+
+      <p>Brevard, NC, USA
+        Latitude and longitude coordinates are: 35.23345, -82.73429.</p><button id="coord_bouton_brevard">Valider</button>
+</div>
+
+    
+    </header>
+    <footer id="pied"></footer>
+    
+    <script src="script_morph.js" charset="utf-8"></script>
+    <script src="script.js" charset="utf-8"></script>
+    <script src="map.js" charset="utf-8"></script>
+    <script src="cities.js" charset="utf-8"></script>
+  </body>
+</html>

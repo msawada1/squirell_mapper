@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sélectionner une image</title>
+  <script>
+    function afficherImage(event) {
+      var fichier = event.target.files[0];
+      var lecteur = new FileReader();
+
+      lecteur.onload = function(e) {
+        var image = document.getElementById('image');
+        image.src = e.target.result;
+      };
+
+      lecteur.readAsDataURL(fichier);
+    }
+  </script>
+</head>
+<body>
+
+    <div id="'image-tel">
+  <h1>Sélectionner une image</h1>
+  <form action="image.php" method="post" enctype="multipart/form-data">
+    <input type="file" accept="image/*" onchange="afficherImage(event)" name="image">
+    <input type="submit" value="Envoyer">
+  </form>
+  <img id="image" src="#" alt="Aperçu de l'image">
+
+</div>
+
+</body>
+</html>
